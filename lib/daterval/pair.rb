@@ -6,6 +6,10 @@ module Daterval
       normalize!
     end
 
+    def to_i
+      end_time.to_i - start_time.to_i
+    end
+
     attr_accessor :start_time, :end_time
 
     private

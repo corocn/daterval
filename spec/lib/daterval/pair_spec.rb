@@ -31,4 +31,51 @@ RSpec.describe Daterval::Pair do
       end
     end
   end
+
+  describe '#to_i' do
+    it 'day' do
+      expect(
+        described_class.new(
+          Time.parse('2018/01/01 00:00'),
+          Time.parse('2018/01/02 00:00')
+        ).to_i
+      ).to eq(24 * 60 * 60)
+    end
+
+    it 'minute' do
+      expect(
+        described_class.new(
+          Time.parse('2018/01/01 00:00'),
+          Time.parse('2018/01/01 23:59')
+        ).to_i
+      ).to eq(24 * 60 * 60 - 60)
+    end
+
+    it 'second' do
+      expect(
+        described_class.new(
+          Time.parse('2018/01/01 00:00:01'),
+          Time.parse('2018/01/01 00:00:03')
+        ).to_i
+      ).to eq(2)
+    end
+
+    it 'over month' do
+      expect(
+        described_class.new(
+          Time.parse('2018/01/31 12:00'),
+          Time.parse('2018/02/01 12:00')
+        ).to_i
+      ).to eq(24 * 60 * 60)
+    end
+
+    it 'zero' do
+      expect(
+        described_class.new(
+          Time.parse('2018/01/01 00:00'),
+          Time.parse('2018/01/01 00:00')
+        ).to_i
+      ).to eq(0)
+    end
+  end
 end
