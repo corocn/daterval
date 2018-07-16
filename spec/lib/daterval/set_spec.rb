@@ -35,4 +35,65 @@ RSpec.describe Daterval::Set do
       end
     end
   end
+
+  describe '#merged!' do
+    context 'all pairs to 1 pair' do
+      subject do
+        described_class.new(
+          Daterval::Pair.new('2018/01/03 00:00:00', '2018/01/04 00:00:00'),
+          Daterval::Pair.new('2018/01/02 00:00:00', '2018/01/03 00:00:00'),
+          Daterval::Pair.new('2018/01/01 00:00:00', '2018/01/02 00:00:00')
+        ).merged!
+      end
+
+      it do
+        expect(subject.count).to eq(1)
+        expect(subject.list.first.begin).to eq(Time.parse('2018/01/01 00:00:00'))
+        expect(subject.list.first.end).to eq(Time.parse('2018/01/04 00:00:00'))
+      end
+    end
+
+    context 'all pairs still seperated ' do
+      subject do
+        described_class.new(
+          Daterval::Pair.new('2018/01/03 00:00:01', '2018/01/04 00:00:00'),
+          Daterval::Pair.new('2018/01/02 00:00:01', '2018/01/03 00:00:00'),
+          Daterval::Pair.new('2018/01/01 00:00:00', '2018/01/02 00:00:00')
+        ).merged!
+      end
+
+      it do
+        expect(subject.count).to eq(3)
+
+        expect(subject.list[0].begin).to eq(Time.parse('2018/01/01 00:00:00'))
+        expect(subject.list[0].end).to eq(Time.parse('2018/01/02 00:00:00'))
+
+        expect(subject.list[1].begin).to eq(Time.parse('2018/01/02 00:00:01'))
+        expect(subject.list[1].end).to eq(Time.parse('2018/01/03 00:00:00'))
+
+        expect(subject.list[2].begin).to eq(Time.parse('2018/01/03 00:00:01'))
+        expect(subject.list[2].end).to eq(Time.parse('2018/01/04 00:00:00'))
+      end
+    end
+
+    context 'some of all pairs merged' do
+      subject do
+        described_class.new(
+          Daterval::Pair.new('2018/01/03 00:00:01', '2018/01/04 00:00:00'),
+          Daterval::Pair.new('2018/01/01 00:00:00', '2018/01/02 00:00:00'),
+          Daterval::Pair.new('2018/01/02 00:00:00', '2018/01/03 00:00:00')
+        ).merged!
+      end
+
+      it do
+        expect(subject.count).to eq(2)
+
+        expect(subject.list[0].begin).to eq(Time.parse('2018/01/01 00:00:00'))
+        expect(subject.list[0].end).to eq(Time.parse('2018/01/03 00:00:00'))
+
+        expect(subject.list[1].begin).to eq(Time.parse('2018/01/03 00:00:01'))
+        expect(subject.list[1].end).to eq(Time.parse('2018/01/04 00:00:00'))
+      end
+    end
+  end
 end

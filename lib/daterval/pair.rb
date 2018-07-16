@@ -21,6 +21,21 @@ module Daterval
       range.end.to_i - range.begin.to_i
     end
 
+    def ==(other)
+      range.begin == other.begin && range.end == other.end
+    end
+
+    def overlaps?(other)
+      range.overlaps?(other.range)
+    end
+
+    def overlap(other)
+      begin_time = range.begin < other.begin ? range.begin : other.begin
+      end_time = range.end > other.end ? range.end : other.end
+
+      self.class.new(begin_time, end_time)
+    end
+
     attr_accessor :range
   end
 end

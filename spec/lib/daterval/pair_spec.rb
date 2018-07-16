@@ -89,4 +89,46 @@ RSpec.describe Daterval::Pair do
       ).to eq(0)
     end
   end
+
+  describe '#overlaps? and #overlap' do
+    context 'same' do
+      let(:pair1) { described_class.new('2018/01/01 00:00', '2018/01/02 00:00') }
+      let(:pair2) { described_class.new('2018/01/01 00:00', '2018/01/02 00:00') }
+
+      it do
+        expect(pair1.overlaps?(pair2)).to be_truthy
+        expect(pair1.overlap(pair2)).to eq(described_class.new('2018/01/01 00:00', '2018/01/02 00:00'))
+      end
+    end
+
+    context 'overlap pair1 front' do
+      let(:pair1) { described_class.new('2018/01/01 00:00', '2018/01/02 00:00') }
+      let(:pair2) { described_class.new('2018/01/01 12:34', '2018/01/02 12:34') }
+
+      it do
+        expect(pair1.overlaps?(pair2)).to be_truthy
+        expect(pair1.overlap(pair2)).to eq(described_class.new('2018/01/01 00:00', '2018/01/02 12:34'))
+      end
+    end
+
+    context 'overlap pair2 front' do
+      let(:pair1) { described_class.new('2018/01/01 12:34', '2018/01/02 12:34') }
+      let(:pair2) { described_class.new('2018/01/01 00:00', '2018/01/02 00:00') }
+
+      it do
+        expect(pair1.overlaps?(pair2)).to be_truthy
+        expect(pair1.overlap(pair2)).to eq(described_class.new('2018/01/01 00:00', '2018/01/02 12:34'))
+      end
+    end
+
+    context 'not overlapped but return new pair with max range' do
+      let(:pair1) { described_class.new('2018/01/01 12:34', '2018/01/02 12:34') }
+      let(:pair2) { described_class.new('2018/01/02 12:35', '2018/01/03 12:34') }
+
+      it do
+        expect(pair1.overlaps?(pair2)).to be_falsey
+        expect(pair1.overlap(pair2)).to eq(described_class.new('2018/01/01 12:34', '2018/01/03 12:34'))
+      end
+    end
+  end
 end
