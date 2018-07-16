@@ -5,4 +5,5 @@ module Daterval
   extend ActiveSupport::Autoload
 
   autoload :Pair, 'daterval/pair'
+  autoload :Set, 'daterval/set'
 end

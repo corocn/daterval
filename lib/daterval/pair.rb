@@ -1,6 +1,3 @@
-require 'daterval/version'
-require 'daterval/pair'
-
 module Daterval
   class Pair
     def initialize(start_time, end_time)

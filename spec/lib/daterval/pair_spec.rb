@@ -9,7 +9,6 @@ RSpec.describe Daterval::Pair do
       expect(subject.end_time).to eq(end_time)
     end
 
-
     describe 'initialize with swapping start and end' do
       context 'day' do
         let(:start_time) { Time.parse('2018/01/02 00:00') }

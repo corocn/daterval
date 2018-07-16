@@ -1,0 +1,45 @@
+AllCops:
+  DisplayCopNames: true
+  Exclude:
+    - 'bin/**/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
+    - '**/Gemfile'
+    - '**/gemspec'
+
+
+Metrics/LineLength:
+  Max: 150
+  AllowURI: true
+    - http
+    - https
+
+Style/Documentation:
+  Enabled: false
+
+Naming/FileName:
+  Exclude:
+    - '**/Gemfile'
+    - '**/Rakefile'
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Metrics/MethodLength:
+  CountComments: false
+  Max: 19
+
+Metrics/AbcSize:
+  Max: 25
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - "spec/**/*"
+
+Style/FormatStringToken:
+  Enabled: false
