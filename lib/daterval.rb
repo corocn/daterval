@@ -1,5 +1,8 @@
-require "daterval/version"
+require 'daterval/version'
+require 'active_support/all'
 
 module Daterval
-  # Your code goes here...
+  extend ActiveSupport::Autoload
+
+  autoload :Pair, 'daterval/pair'
 end
